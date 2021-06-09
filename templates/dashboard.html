@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"></script>
+    <!-- html2pdf.js -->
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/html2pdf.js' %}"></script>
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    <!-- testing -->
+    <div class="container" id="main">
+      <div class="row">
+        <div class="col-3">
+          B101 - Mumbai Branch
+        </div>
+        <div class="col-6">
+          Credit Analytic Dashboard
+        </div>
+        <div class="col-3">
+          10-Nov-2020
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <div class="col-6">
+              Gross NPA
+            </div>
+            <div class="col-6">
+              SMA2
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <canvas id="myChart1" width="500" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <div class="col-6">
+              SMA1
+            </div>
+            <div class="col-6">
+              Recoveries
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <canvas id="myChart2" width="500" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <table class="table table-striped">
+            <caption style="caption-side: top;"><b>New NPA Accounts</b></caption>
+            <thead>
+              <tr>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Days Overdue</th>
+                <th scope="col">Amount Outstanding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">ABCD</th>
+                <td>123</td>
+                <td>3343</td>
+              </tr>
+              <tr>
+                <th scope="row">DGE</th>
+                <td>232</td>
+                <td>2426</td>
+              </tr>
+              <tr>
+                <th scope="row">EEW</th>
+                <td>7555</td>
+                <td>23121</td>
+              </tr>
+              <tr>
+                <th scope="row">BDDEW</th>
+                <td>976</td>
+                <td>1235</td>
+              </tr>
+              <tr>
+                <th scope="row">TTER</th>
+                <td>987</td>
+                <td>6539</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md">
+          <table class="table table-striped">
+            <caption style="caption-side: top;"><b>NPA Accounts with Recoveries</b></caption>
+            <thead>
+              <tr>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Recovery</th>
+                <th scope="col">Amount Outstanding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">SVDMD</th>
+                <td>4323</td>
+                <td>1112</td>
+              </tr>
+              <tr>
+                <th scope="row">JOPPX</th>
+                <td>13435</td>
+                <td>2033</td>
+              </tr>
+              <tr>
+                <th scope="row">POEEN</th>
+                <td>576</td>
+                <td>945</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md">
+          <table class="table table-striped">
+            <caption style="caption-side: top;"><b>New SMA Accounts</b></caption>
+            <thead>
+              <tr>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Days Overdue</th>
+                <th scope="col">Amount Outstanding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">ABCD</th>
+                <td>23</td>
+                <td>5483</td>
+              </tr>
+              <tr>
+                <th scope="row">DGE</th>
+                <td>65</td>
+                <td>1919</td>
+              </tr>
+              <tr>
+                <th scope="row">EEW</th>
+                <td>35</td>
+                <td>4765</td>
+              </tr>
+              <tr>
+                <th scope="row">BDDEW</th>
+                <td>98</td>
+                <td>228</td>
+              </tr>
+              <tr>
+                <th scope="row">TTER</th>
+                <td>65</td>
+                <td>9459</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-8 d-grid gap-2 mx-auto">
+      <button type="button" class="btn btn-secondary btn-lg" onclick="genPdf()">Generate PDF</button>
+    </div>
+    <script>
+      // Generates pdf on button click     
+      function genPdf() {
+        const mainElement = document.getElementById('main');
+        const opt = {
+          html2canvas: {
+            windowWidth: 2000
+          },
+          jsPDF: {orientation: 'landscape'}
+        };
+        html2pdf().set(opt).from(mainElement).save();
+      }
+      // Chart.js setup
+      const labels = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ];
+      const data1 = {
+        labels: labels,
+        datasets: [{
+          data: [65, 59, 80, 81, 56, 55, 48, 44, 55, 56, 50, 62],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)'
+          ],
+          borderWidth: 1
+        }]
+      };   
+      const data2 = {
+        labels: labels,
+        datasets: [{
+          data: [40, 49, 60, 51, 86, 45, 68, 54, 50, 46, 58, 42],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)'
+          ],
+          borderWidth: 1
+        }]
+      };   
+      const config1 = {
+        type: 'bar',
+        data: data1,
+        options: {
+          responsive:false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: "GNPA Trend",
+              align: 'start'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: true,
+                display: false
+              }
+            },
+            x: {
+              grid: {
+                drawBorder: true,
+                display: false
+              }
+            }
+          }
+        },
+      };  
+      const config2 = {
+        type: 'bar',
+        data: data2,
+        options: {
+          responsive:false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: "GNPA Trend",
+              align: 'start'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: true,
+                display: false
+              }
+            },
+            x: {
+              grid: {
+                drawBorder: true,
+                display: false
+              }
+            }
+          }
+        },
+      };  
+      var myChart1 = new Chart(
+        document.getElementById('myChart1'),
+        config1
+      );
+      var myChart2 = new Chart(
+        document.getElementById('myChart2'),
+        config2
+      );
+    </script>
+  </body>
+</html>

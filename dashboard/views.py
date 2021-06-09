@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 
 def dashboardView(request):
-    pass
+    return render(request, 'dashboard.html')
 
 
 def loginView(request):
