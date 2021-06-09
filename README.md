@@ -7,3 +7,4 @@ Using Django as backend, two views are provided:
 On local deployment, go to localhost:8000/login to access login view. After login, you will be redirected to localhost:8000/dashboard
 
 Live site is deployed at: </br>
+https://chart-dashboard-django.herokuapp.com/login
