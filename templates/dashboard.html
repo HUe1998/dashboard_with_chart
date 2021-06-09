@@ -18,13 +18,19 @@
     <div class="container" id="main">
       <div class="row">
         <div class="col-3">
-          B101 - Mumbai Branch
+          <h6 class="text-muted text-start">
+            B101 - Mumbai Branch
+          </h6>
         </div>
         <div class="col-6">
-          Credit Analytic Dashboard
+          <h5 class="text-muted text-center">
+            Credit Analytic Dashboard
+          </h5>
         </div>
         <div class="col-3">
-          10-Nov-2020
+          <h6 class="text-muted text-end">
+            10-Nov-2020
+          </h6>
         </div>
       </div>
       <div class="row">
@@ -177,6 +183,7 @@
       function genPdf() {
         const mainElement = document.getElementById('main');
         const opt = {
+          margin: 5,
           html2canvas: {
             windowWidth: 2000
           },
